@@ -13,7 +13,7 @@
 <body>
 <div th:insert="~{header::header}"></div>
 
-    <h2 th:inline="text" class="title customer">Customer Name : [[${customer.name}]] &nbsp;  Contact : [[${customer.contact}]]</h2>
+    <h2 th:inline="text" class="title customer">Customer Name : [[${customer.name}]] , &nbsp;Contact : [[${customer.contact}]]</h2>
     <hr class="rule">
 <a th:href="@{shop(customer=${customer.name})}" class="btn btn-dark back btn-lg">
     Back

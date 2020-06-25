@@ -105,22 +105,28 @@ public class HomeController {
 
     @PostMapping("saveitem")
     public String save_item(@ModelAttribute("Item")Items item){
-
-            if ((item.getName() != null && item.getPrice() != 0) && (item.getStock() != 0)) {
-                int pos = shoppingCart.check_item(item.getName());
-                System.out.println(pos);
-                if (pos >= 0) {
-                    Items items = shoppingCart.getItems().get(pos);
-                    items.setName(item.getName().trim());
-                    items.setPrice(item.getPrice());
-                    items.setStock(item.getStock());
-                    return "redirect:items";
-                } else {
-                    shoppingCart.add_item(item);
+            try {
+                if ((item.getName() != null && item.getPrice() != 0) && (item.getStock() != 0)) {
+                    int pos = shoppingCart.check_item(item.getName());
+                    System.out.println(pos);
+                    if (pos >= 0) {
+                        Items items = shoppingCart.getItems().get(pos);
+                        items.setName(item.getName().trim());
+                        items.setPrice(item.getPrice());
+                        items.setStock(item.getStock());
+                        return "redirect:items";
+                    } else {
+                        shoppingCart.add_item(item);
+                    }
                 }
+            }catch(Exception e){
+                System.out.println("Exception occurs => "+e.getMessage());
+            }finally {
+                return "redirect:items";
             }
 
-        return "redirect:items";
+
+
 
     }
 
@@ -128,13 +134,13 @@ public class HomeController {
     public String update_item(@RequestParam("name")String[] name,@ModelAttribute("Item")Items item){
         if ((item.getName() != null && item.getPrice() != 0) && (item.getStock() != 0)) {
             int pos = shoppingCart.check_item(name[0]);
-            System.out.println(pos+" => "+name[0]);
+//            System.out.println(pos+" => "+name[0]);
             if (pos >= 0) {
                 Items items = shoppingCart.getItems().get(pos);
                 items.setName(name[1]);
                 items.setPrice(item.getPrice());
                 items.setStock(item.getStock());
-                System.out.println(item.toString());
+//                System.out.println(item.toString());
                 return "redirect:items";
             } else {
                 shoppingCart.add_item(item);
@@ -285,19 +291,26 @@ public class HomeController {
 
 
     @PostMapping("/savecustprod")
-    public String add_cust_item(@RequestParam("item")String item,@RequestParam("customer")String customer,@RequestParam("quantity")int quantity,Model model){
+    public String add_cust_item(@RequestParam("item")String item,@RequestParam("customer")String customer,@RequestParam("quantity")String quantity,Model model){
 
-        if(item!=null && customer!=null && quantity!=0){
-            int pos=shoppingCart.check_cust(customer);
-            int pos1=shoppingCart.check_item(item);
-            if(pos>=0 && pos1>=0){
+        if(item!=null && customer!=null && quantity!=null){
+            try{
+                int pos=shoppingCart.check_cust(customer);
+                int pos1=shoppingCart.check_item(item);
+                if(pos>=0 && pos1>=0){
 
-                shoppingCart.add_prod_basket(customer,item,quantity);
+                    shoppingCart.add_prod_basket(customer,item,Integer.valueOf(quantity));
 //                ModelAndView modelAndView=new ModelAndView();
-                model.addAttribute("name",item);
-                model.addAttribute("customer",customer);
+                    model.addAttribute("name",item);
+                    model.addAttribute("customer",customer);
 
+                }
+            }catch (Exception e){
+                System.out.println("Exception occurs => "+e.getMessage());
+            }finally {
+                return "redirect:shop?customer="+customer;
             }
+
         }
         return "redirect:shop?customer="+customer;
     }
