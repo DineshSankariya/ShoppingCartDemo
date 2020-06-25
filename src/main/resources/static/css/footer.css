@@ -1,0 +1,16 @@
+.footer{
+        background-color:#222831;
+
+        position:absolute;
+        bottom:0px;
+        left:0px;
+        right:0px;
+        width:100%;
+}
+
+.footer footer h3{
+        font-size:25px;
+        color:white;
+        margin-left:560px;
+        padding:10px;
+}
