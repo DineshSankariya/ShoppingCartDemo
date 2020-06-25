@@ -9,10 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.model.IModel;
+import org.thymeleaf.util.MapUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/shopping")
@@ -313,10 +315,11 @@ public class HomeController {
             Double price=0.0;
             Customer customer1=shoppingCart.getCustomers().get(pos);
             model.addAttribute("customer",customer1);
-            model.addAttribute("basket",customer1.getBasket().getBasket().entrySet());
-            for (Map.Entry<Items,Integer> e:customer1.getBasket().getBasket().entrySet()
-                 ) {
-                price+=e.getKey().getPrice()*e.getValue();
+
+            Map<Integer,Items> a=customer1.getBasket().getBasket().entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue,Map.Entry::getKey));
+            model.addAttribute("basket",a.entrySet());
+            for (Map.Entry<Integer,Items> e:a.entrySet()) {
+                price+=e.getKey()*e.getValue().getPrice();
             }
             model.addAttribute("total",price);
 

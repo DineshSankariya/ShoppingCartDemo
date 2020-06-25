@@ -7,10 +7,23 @@
     margin-top:50px;
     margin-bottom:20px;
     width:80%;
-    margin-left:120px;
+    margin-left:70px;
 }
 
 .back{
-    margin-left:600px;
+    margin-left:70px;
     margin-top:20px;
+    padding-left:30px;
+    padding-right:30px;
+    padding-top:3px;
+    padding-bottom:6px;
+}
+
+.customer{
+    margin-left:70px
+}
+
+.rule{
+      margin-left:70px;
+    margin-right:50px;
 }
